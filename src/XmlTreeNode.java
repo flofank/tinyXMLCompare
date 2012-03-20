@@ -3,6 +3,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import javax.swing.JTree;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
 
@@ -15,9 +16,9 @@ public class XmlTreeNode implements TreeNode {
 	private ArrayList<XmlTreeNode> children = new ArrayList<XmlTreeNode>();
 	
 	//Matching properties
-	String match_id;		//Two matching nodes from compared xmls are given the same id (Maybe ids could be inherited)
-	boolean equal;	//True if matching node from other xml is all the same 
-	
+	private String match_id;		//Two matching nodes from compared xmls are given the same id (Maybe ids could be inherited)
+	private boolean equal;	//True if matching node from other xml is all the same 
+	private boolean searchMatch;
 
 	public XmlTreeNode(String name, String text, Hashtable<String,String> attributes, XmlTreeNode parent, ArrayList<XmlTreeNode> children) {
 		this.name = name;
@@ -90,43 +91,7 @@ public class XmlTreeNode implements TreeNode {
 		
 	}
 	
-	public String getName() {
-		return name;
-	}
 	
-	public Hashtable<String,String> getAttributes() {
-		return attributes;
-	}
-	
-	public void addChild(XmlTreeNode child) {
-		children.add(child);
-	}
-	
-	public String getAttribute(String key) {
-		return attributes.get(key);
-	}
-	public void addAttribute(String key, String value) {
-		attributes.put(key, value);
-	}
-	
-	public ArrayList<XmlTreeNode> getChilds() {
-		return children;
-	}
-	
-	public int countChilds() {
-		return children.size();
-	}
-	
-	public String getText() {
-		return text;
-	}
-	public void setText(String text) {
-		this.text = text;
-	}
-	
-	public boolean hasText() {
-		return text != null;
-	}
 
 	public String getMatch_id() {
 		if (match_id == null) {
@@ -169,6 +134,66 @@ public class XmlTreeNode implements TreeNode {
 			node = node.getParent();
 		}
 		return new TreePath(nodes.toArray());
+	}
+	public void expandSearchMatches(JTree tree) {
+		if (searchMatch) {
+			tree.expandPath(parent.getPath());
+		}
+		for (XmlTreeNode child : children) {
+			child.expandSearchMatches(tree);
+		}
+	}
+	public void collapseAll(JTree tree) {
+		for (XmlTreeNode child : children) {
+			child.collapseAll(tree);
+		}
+		if (parent != null) {
+			tree.collapsePath(parent.getPath());
+		}		
+	}
+	/**
+	 * Getters and Setters from here on
+	 */
+	
+	public boolean isSearchMatch() {
+		return searchMatch;
+	}
+	public void setSearchMatch(boolean searchMatch) {
+		this.searchMatch = searchMatch;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public Hashtable<String,String> getAttributes() {
+		return attributes;
+	}	
+	public String getAttribute(String key) {
+		return attributes.get(key);
+	}
+	public void addAttribute(String key, String value) {
+		attributes.put(key, value);
+	}
+	
+	public void addChild(XmlTreeNode child) {
+		children.add(child);
+	}
+	public ArrayList<XmlTreeNode> getChilds() {
+		return children;
+	}
+	public int countChilds() {
+		return children.size();
+	}
+	
+	public String getText() {
+		return text;
+	}
+	public void setText(String text) {
+		this.text = text;
+	}
+	public boolean hasText() {
+		return text != null;
 	}
 	
 	

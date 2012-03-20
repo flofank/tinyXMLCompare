@@ -23,27 +23,30 @@ import javax.swing.event.TreeExpansionEvent;
 
 
 //Comment
-public class UI extends JFrame implements DropTargetListener {
+public class UI extends JFrame implements DropTargetListener {	
 	private Document xml_a, xml_b;
 	private XmlTreeNode root_a, root_b;
-	private JTree tree_a, tree_b;
-	private JLabel lbl_path_a, lbl_path_b;
-	private JScrollPane scrollPane_a, scrollPane_b;
+	
 	private DropTarget drop_a, drop_b;
 	private XmlTreeCellRenderer renderer = new XmlTreeCellRenderer();
+	
+	//Main UI
+	private JSplitPane splitPane;
+	private JScrollPane scrollPane_a, scrollPane_b;
+	private JTree tree_a, tree_b;
+	//Top Interface
 	private JPanel pn_top;
 	private JPanel pn_paths;
-	private JSplitPane splitPane;
-	//Main UI
-	//Top Interface
+	private JLabel lbl_path_a, lbl_path_b;
+	private JButton btn_file_a, btn_file_b;
+	private JTextField txtSuche;
 	//MenuBar
 	private JMenuBar menuBar;
 	private JMenu mnFile, mnAction, mnOptions, mnInformation;
-	private JMenuItem mntmCompare;
+	private JMenuItem mntmCompare, mntmSearch;
 	private JRadioButtonMenuItem mnrd_AutoExp;
-	private JTextField txtSuche;
-	private JButton btn_file_a, btn_file_b;
-	private JMenuItem mntmSearch;
+	private JMenu mnView;
+	private JMenuItem mntmCollapseAll;
 	
 	
 	/**
@@ -84,12 +87,24 @@ public class UI extends JFrame implements DropTargetListener {
 		menuBar.add(mnAction);
 		mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
+		
+		mnView = new JMenu("View");
+		menuBar.add(mnView);
+		
+		mntmCollapseAll = new JMenuItem("Collapse All");
+		mntmCollapseAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				root_a.collapseAll(tree_a);
+				root_b.collapseAll(tree_b);
+			}
+		});
+		mnView.add(mntmCollapseAll);
 		mnInformation = new JMenu("Information");
 		menuBar.add(mnInformation);
 		//Actions
 		mntmCompare = new JMenuItem("Compare");
-		mntmCompare.addMouseListener(new MouseAdapter() {
-			public void mouseClicked(MouseEvent arg0) {
+		mntmCompare.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
 				compare();
 			}
 		});
@@ -113,7 +128,7 @@ public class UI extends JFrame implements DropTargetListener {
 		this.setTitle("tinyXMLCompare");
 		this.setBounds(100, 100, 900, 740);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.getContentPane().setLayout(new BorderLayout(0, 0));
+		this.getContentPane().setLayout(new BorderLayout(0, 5));
 		
 		initTrees();
 		initTopInterface();
@@ -259,9 +274,23 @@ public class UI extends JFrame implements DropTargetListener {
 		lbl_path_a.setBackground(Color.WHITE);
 		pn_paths.add(lbl_path_a);
 		txtSuche = new JTextField();
-		txtSuche.addInputMethodListener(new InputMethodListener() {
-			public void caretPositionChanged(InputMethodEvent arg0) {}
-			public void inputMethodTextChanged(InputMethodEvent arg0) {
+		txtSuche.addKeyListener(new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
+					if (txtSuche.getText().equals("")) {
+						txtSuche.setText("Suche ...");
+						renderer.setSearching(false);
+					} else {
+						renderer.setSearching(true);
+						if (XmlUtilities.find(txtSuche.getText(), false, root_a) | XmlUtilities.find(txtSuche.getText(), false, root_b)) {
+							root_a.collapseAll(tree_a);
+							root_b.collapseAll(tree_b);
+							root_a.expandSearchMatches(tree_a);
+							root_b.expandSearchMatches(tree_b);						
+						}
+					}
+					repaint();
+				}
 			}
 		});
 		txtSuche.setText("Suche ...");

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -116,5 +118,21 @@ public class XmlUtilities {
 			}
 		}
 		return null;
+	}
+	
+	public static Boolean find(String search, Boolean regex, XmlTreeNode node) {
+		Boolean found = false;
+		if (node.toString().contains(search)) {
+			node.setSearchMatch(true);
+			found = true;
+		} else {
+			node.setSearchMatch(false);
+		}
+		for (XmlTreeNode child : node.getChilds()) {
+			if (find(search, regex, child)) {
+				found = true;
+			}
+		}
+		return found;
 	}
 }
