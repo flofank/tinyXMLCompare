@@ -28,9 +28,6 @@ public class UI extends JFrame implements DropTargetListener {
 	private XmlTreeCellRenderer renderer = new XmlTreeCellRenderer();
 	private JPanel pn_top;
 	private JPanel pn_center;
-	private JPanel pn_openfile_a;
-	private JPanel pn_openfile_b;
-	private JPanel pn_compare;
 	private JPanel pn_paths;
 	private JPanel pn_path_a;
 	private JPanel pn_path_b;
@@ -98,51 +95,44 @@ public class UI extends JFrame implements DropTargetListener {
 		pn_top = new JPanel();
 		getContentPane().add(pn_top, BorderLayout.NORTH);
 		pn_top.setLayout(new BorderLayout(0, 0));
-		
-		pn_openfile_a = new JPanel();
-		pn_top.add(pn_openfile_a, BorderLayout.WEST);
-		pn_openfile_a.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		//Buttons
-		JButton btn_file_a = new JButton("Open File");
-		pn_openfile_a.add(btn_file_a);
+		JButton btn_file_a = new JButton("");
+		btn_file_a.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
+		pn_top.add(btn_file_a, BorderLayout.WEST);
+		btn_file_a.setToolTipText("Load XML Left");
 		btn_file_a.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseFile(true);
 			}
 		});
-		
-		pn_openfile_b = new JPanel();
-		pn_top.add(pn_openfile_b, BorderLayout.EAST);
-		pn_openfile_b.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		JButton btn_file_b = new JButton("Open File");
-		pn_openfile_b.add(btn_file_b);
+		JButton btn_file_b = new JButton("");
+		btn_file_b.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
+		pn_top.add(btn_file_b, BorderLayout.EAST);
+		btn_file_b.setToolTipText("Load XML Right");
 		btn_file_b.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chooseFile(false);
 			}
 		});
 		
-		pn_compare = new JPanel();
-		pn_top.add(pn_compare, BorderLayout.CENTER);
-		
 		pn_paths = new JPanel();
-		pn_top.add(pn_paths, BorderLayout.SOUTH);
+		pn_top.add(pn_paths, BorderLayout.CENTER);
 		pn_paths.setLayout(new GridLayout(0, 2, 0, 0));
 		
 		pn_path_a = new JPanel();
-		FlowLayout fl_pn_path_a = (FlowLayout) pn_path_a.getLayout();
-		fl_pn_path_a.setAlignment(FlowLayout.LEFT);
 		pn_paths.add(pn_path_a);
+		pn_path_a.setLayout(null);
 		//Labels
 		lbl_path_a = new JLabel("Path a");
+		lbl_path_a.setBounds(5, 5, 31, 14);
 		pn_path_a.add(lbl_path_a);
 		lbl_path_a.setBackground(Color.WHITE);
 		
 		pn_path_b = new JPanel();
-		FlowLayout fl_pn_path_b = (FlowLayout) pn_path_b.getLayout();
-		fl_pn_path_b.setAlignment(FlowLayout.RIGHT);
 		pn_paths.add(pn_path_b);
+		pn_path_b.setLayout(null);
 		lbl_path_b = new JLabel("Path b");
+		lbl_path_b.setBounds(355, 5, 31, 14);
 		pn_path_b.add(lbl_path_b);
 		lbl_path_b.setBackground(Color.WHITE);
 		lbl_path_b.setHorizontalAlignment(SwingConstants.RIGHT);
