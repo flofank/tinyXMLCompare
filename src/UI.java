@@ -51,10 +51,14 @@ public class UI extends JFrame implements DropTargetListener {
 	 */
 	public static void main(String[] args) {
 		UI window = new UI();
-		if (args.length == 2) {
-			window.loadFile(args[0], true);
-			window.loadFile(args[1], false);
-		}
+		try {
+			if (args.length == 2) {
+				window.loadFile(new File(args[0]), true);
+				window.loadFile(new File(args[1]), false);
+			}
+		} catch (Exception e) {
+			System.out.println("File paths not valid");
+		}		
 	}
 
 	/**
