@@ -1,0 +1,291 @@
+<XMLDoku computername="V04J00" ScriptVersion="1.0.0">
+	<Information title="About">
+		<FQDN>V04J00.pfin.ch</FQDN>
+		<AppSysPF>SMWINPF SMWA PROD</AppSysPF>
+		<System>Microsoft® Windows Server® 2008 Standard Service Pack 2 X64
+		</System>
+		<Location>Bern</Location>
+		<Manufacturer>VMware, Inc.</Manufacturer>
+		<Model>VMware Virtual Platform</Model>
+		<PrimaryOwnerName>Swiss Post</PrimaryOwnerName>
+		<Date>01/24/2012 07:45:21</Date>
+		<Creator>mumenthalers</Creator>
+		<PathLocal>C:\V04J00_2012-01-24.xml</PathLocal>
+		<PathNas>\\pfnas02pf.pfin.ch\smwindows$\server_doku\V04J00_2012-01-24.xml
+		</PathNas>
+	</Information>
+	<Information title="GlobalGroups">
+		<GlobalGroup name="Administrators">
+			<member>L-SrvAdm</member>
+			<member>admins8pf-smwinpf</member>
+			<member>z-smw-sp-svc</member>
+			<member>enkerliw</member>
+		</GlobalGroup>
+		<GlobalGroup name="Guests">
+			<member>L-Guest</member>
+		</GlobalGroup>
+		<GlobalGroup name="Remote Desktop Users">
+			<member>s-smwlabe</member>
+		</GlobalGroup>
+		<GlobalGroup name="Users">
+			<member>INTERACTIVE</member>
+			<member>Authenticated Users</member>
+			<member>Domain Users</member>
+			<member>l-kilchoerb</member>
+		</GlobalGroup>
+		<GlobalGroup name="SQLServer2005MSSQLUser$V04J00$MICROSOFT##SSEE">
+			<member>NETWORK SERVICE</member>
+		</GlobalGroup>
+	</Information>
+	<Information title="Permissions">
+		<Disk size="39GB" Name="SYSTEM" DeviceID="C:\">
+			<Owner>
+				<object>NT SERVICE\TrustedInstaller</object>
+			</Owner>
+			<Access>
+				<object>CREATOR OWNER</object>
+				<object>NT AUTHORITY\SYSTEM</object>
+				<object>BUILTIN\Administrators</object>
+				<object>BUILTIN\Users</object>
+			</Access>
+			<folder path="C:\cyberark">
+				<Owner>
+					<object>PFIN\s-pflab01</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\s-pflab01</object>
+				</Access>
+			</folder>
+			<folder path="C:\inetpub">
+				<Owner>
+					<object>NT AUTHORITY\SYSTEM</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Kits">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Patch">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\PerfLogs">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\fuchsd</object>
+				</Access>
+			</folder>
+			<folder path="C:\Program Files">
+				<Owner>
+					<object>NT SERVICE\TrustedInstaller</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Program Files (x86)">
+				<Owner>
+					<object>NT SERVICE\TrustedInstaller</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Reports">
+				<Owner>
+					<object>PFIN\siegenthalda</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\siegenthalda</object>
+				</Access>
+			</folder>
+			<folder path="C:\SYSAPPS">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Temp">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="C:\Users">
+				<Owner>
+					<object>BUILTIN\Administrators</object>
+				</Owner>
+				<Access>
+					<object domain=""> Everyone</object>
+				</Access>
+			</folder>
+			<folder path="C:\usr">
+				<Owner>
+					<object>PFIN\kilchoerb</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\kilchoerb</object>
+				</Access>
+			</folder>
+			<folder path="C:\Windows">
+				<Owner>
+					<object>NT SERVICE\TrustedInstaller</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+		</Disk>
+		<Disk size="5GB" Name="APPS" DeviceID="D:\">
+			<Owner>
+				<object>NT AUTHORITY\SYSTEM</object>
+			</Owner>
+			<Access>
+				<object>Everyone</object>
+				<object>CREATOR OWNER</object>
+				<object>NT AUTHORITY\SYSTEM</object>
+				<object>BUILTIN\Administrators</object>
+				<object>BUILTIN\Users</object>
+			</Access>
+			<folder path="D:\Hotfix JET">
+				<Owner>
+					<object>PFIN\kilchoerb</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\kilchoerb</object>
+				</Access>
+			</folder>
+			<folder path="D:\Keybox">
+				<Owner>
+					<object>PFIN\buetzerj</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\buetzerj</object>
+				</Access>
+			</folder>
+			<folder path="D:\SafeSign">
+				<Owner>
+					<object>PFIN\enkerliw</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\enkerliw</object>
+				</Access>
+			</folder>
+			<folder path="D:\share">
+				<Owner>
+					<object>PFIN\siegenthalda</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\siegenthalda</object>
+				</Access>
+			</folder>
+			<folder path="D:\Sysapps">
+				<Owner>
+					<object>NT AUTHORITY\SYSTEM</object>
+				</Owner>
+				<Access>
+				</Access>
+			</folder>
+			<folder path="D:\temp">
+				<Owner>
+					<object>PFIN\gubins</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\gubins</object>
+				</Access>
+			</folder>
+		</Disk>
+		<Disk size="60GB" Name="LU" DeviceID="G:\">
+			<Owner>
+				<object>NT AUTHORITY\SYSTEM</object>
+			</Owner>
+			<Access>
+				<object>Everyone</object>
+				<object>CREATOR OWNER</object>
+				<object>NT AUTHORITY\SYSTEM</object>
+				<object>BUILTIN\Administrators</object>
+				<object>BUILTIN\Users</object>
+			</Access>
+			<folder path="G:\BcKUpdate">
+				<Owner>
+					<object>PFIN\kilchoerb</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\kilchoerb</object>
+				</Access>
+			</folder>
+			<folder path="G:\Live Update">
+				<Owner>
+					<object>PFIN\buetzerj</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\buetzerj</object>
+				</Access>
+			</folder>
+			<folder path="G:\Temp">
+				<Owner>
+					<object>PFIN\buetzerj</object>
+				</Owner>
+				<Access>
+					<object domain="pfin"> PFIN\buetzerj</object>
+				</Access>
+			</folder>
+		</Disk>
+	</Information>
+	<Information title="Shares">
+		<Share name="ADMIN$">
+			<Path>C:\Windows</Path>
+			<Description>Remote Admin</Description>
+		</Share>
+		<Share name="C$">
+			<Path>C:\</Path>
+			<Description>Default share</Description>
+		</Share>
+		<Share name="D$">
+			<Path>D:\</Path>
+			<Description>Default share</Description>
+		</Share>
+		<Share name="G$">
+			<Path>G:\</Path>
+			<Description>Default share</Description>
+		</Share>
+		<Share name="IPC$">
+			<Path>
+			</Path>
+			<Description>Remote IPC</Description>
+		</Share>
+		<Share name="Reports">
+			<Path>C:\Reports</Path>
+			<Description>
+			</Description>
+		</Share>
+		<Share name="SMSCache$">
+			<Path>C:\Windows\AutoInst\SWKitsPart\SMSCache$</Path>
+			<Description>
+			</Description>
+		</Share>
+	</Information>
+	<Information title="Applications">
+		<Service>World Wide Web Publishing Service is Running</Service>
+	</Information>
+	<Information title="Certificates">
+		<Cert>
+			<subject>E=smwinpf55@postfinance.ch/CN=pfnbulive.pfin.ch/OU=PostFinance/O=Post/C=CH
+			</subject>
+			<validity_from>05/07/2010 09:32:31</validity_from>
+			<validity_to>10.06.2012 09:42:31</validity_to>
+		</Cert>
+	</Information>
+	<Information title="ScheduleTasks">
+		<inf>No tasks in specific Domain.</inf>
+	</Information>
+</XMLDoku>

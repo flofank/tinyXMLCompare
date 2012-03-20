@@ -1,0 +1,201 @@
+<XMLDoku computername="V04J03" ScriptVersion="1.0.0">
+  <Information title="About">
+    <FQDN>V04J03.pfin.ch</FQDN>
+    <AppSysPF>SMWINPF SMWA PROD</AppSysPF>
+    <System>Microsoft® Windows Server® 2008 Standard Service Pack 2 X64</System>
+    <Location>Zofingen</Location>
+    <Model>VMware Virtual Platform</Model>
+    <PrimaryOwnerName>Swiss Post</PrimaryOwnerName>
+    <Manufacturer>VMware, Inc.</Manufacturer>
+    <Date>01/24/2012 10:23:48</Date>
+    <Creator>mumenthalers</Creator>
+    <PathLocal>C:\V04J03_2012-01-24.xml</PathLocal>
+    <PathNas>\\pfnas02pf.pfin.ch\smwindows$\server_doku\V04J03_2012-01-24.xml</PathNas>
+  </Information>
+  <Information title="GlobalGroups">
+    <GlobalGroup name="Administrators">
+      <member>L-SrvAdm</member>
+      <member>admins8pf-smwinpf</member>
+      <member>z-smw-sp-svc</member>
+    </GlobalGroup>
+    <GlobalGroup name="IIS_IUSRS">
+      <member>IUSR</member>
+    </GlobalGroup>
+    <GlobalGroup name="Guests">
+      <member>L-Guest</member>
+    </GlobalGroup>
+    <GlobalGroup name="Remote Desktop Users">
+      <member>imholzrom</member>
+    </GlobalGroup>
+    <GlobalGroup name="Users">
+      <member>INTERACTIVE</member>
+      <member>Authenticated Users</member>
+      <member>Domain Users</member>
+    </GlobalGroup>
+  </Information>
+  <Information title="Permissions">
+    <Disk size="39GB" Name="SYSTEM" DeviceID="C:\">
+      <Owner>
+        <object>NT SERVICE\TrustedInstaller</object>
+      </Owner>
+      <Access>
+        <object>CREATOR OWNER</object>
+        <object>NT AUTHORITY\SYSTEM</object>
+        <object>BUILTIN\Administrators</object>
+        <object>BUILTIN\Users</object>
+      </Access>
+      <folder path="C:\f6f45c02e78f70fadbaeb54feaa14b">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+          <object domain="pfin"> PFIN\hollingerp</object>
+        </Access>
+      </folder>
+      <folder path="C:\Kits">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\PerfLogs">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\Program Files">
+        <Owner>
+          <object>NT SERVICE\TrustedInstaller</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\Program Files (x86)">
+        <Owner>
+          <object>NT SERVICE\TrustedInstaller</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\SYSAPPS">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\map">
+        <Owner>
+          <object>NT AUTHORITY\SYSTEM</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\Temp">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="C:\Users">
+        <Owner>
+          <object>BUILTIN\Administrators</object>
+        </Owner>
+        <Access>
+          <object domain=""> Everyone</object>
+        </Access>
+      </folder>
+      <folder path="C:\Windows">
+        <Owner>
+          <object>NT SERVICE\TrustedInstaller</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+    </Disk>
+    <Disk size="10GB" Name="APPS" DeviceID="D:\">
+      <Owner>
+        <object>NT AUTHORITY\SYSTEM</object>
+      </Owner>
+      <Access>
+        <object>Everyone</object>
+        <object>CREATOR OWNER</object>
+        <object>NT AUTHORITY\SYSTEM</object>
+        <object>BUILTIN\Administrators</object>
+        <object>BUILTIN\Users</object>
+      </Access>
+      <folder path="D:\buetzerj">
+        <Owner>
+          <object>PFIN\buetzerj</object>
+        </Owner>
+        <Access>
+          <object domain="pfin"> PFIN\buetzerj</object>
+        </Access>
+      </folder>
+      <folder path="D:\schilli">
+        <Owner>
+          <object>PFIN\schilligerd</object>
+        </Owner>
+        <Access>
+          <object domain="pfin"> PFIN\schilligerd</object>
+        </Access>
+      </folder>
+      <folder path="D:\Sysapps">
+        <Owner>
+          <object>NT AUTHORITY\SYSTEM</object>
+        </Owner>
+        <Access>
+        </Access>
+      </folder>
+      <folder path="D:\Temp">
+        <Owner>
+          <object>PFIN\buetzerj</object>
+        </Owner>
+        <Access>
+          <object domain="pfin"> PFIN\buetzerj</object>
+        </Access>
+      </folder>
+    </Disk>
+  </Information>
+  <Information title="Shares">
+    <Share name="ADMIN$">
+      <Path>C:\Windows</Path>
+      <Description>Remote Admin</Description>
+    </Share>
+    <Share name="C$">
+      <Path>C:\</Path>
+      <Description>Default share</Description>
+    </Share>
+    <Share name="D$">
+      <Path>D:\</Path>
+      <Description>Default share</Description>
+    </Share>
+    <Share name="IPC$">
+      <Path>
+      </Path>
+      <Description>Remote IPC</Description>
+    </Share>
+    <Share name="SMSCache$">
+      <Path>C:\Windows\AutoInst\SWKitsPart\SMSCache$</Path>
+      <Description>
+      </Description>
+    </Share>
+    <Share name="Sysapps">
+      <Path>D:\Sysapps</Path>
+      <Description>
+      </Description>
+    </Share>
+  </Information>
+  <Information title="Applications">
+  </Information>
+  <Information title="Certificates">
+    <p>There is no certificate which will expire in 2012.</p>
+  </Information>
+  <Information title="ScheduleTasks">
+    <inf>No tasks in specific Domain.</inf>
+  </Information>
+</XMLDoku>

@@ -1,0 +1,16 @@
+<bean name="a2">
+	<number>3</number>
+	<person>
+		<name>Peterli</name>
+		<prename>Andreas</prename>
+	</person>
+	<person>
+		<name>Meier</name>
+		<prename>Hans</prename>	
+	</person>
+	<food type="mittagessen">
+		<salat>ceasar</salat>
+		<dessert>schoggigipfel</dessert>
+	</food>
+	<information>lololololololo</information>
+</bean>

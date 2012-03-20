@@ -1,0 +1,12 @@
+<bean name="a1">
+	<number>4</number>
+	<person>
+		<name>Muster</name>
+		<prename>Max</prename>
+	</person>
+	<person>
+		<name>Meier</name>
+		<prename>Peter</prename>	
+	</person>
+	<information>lallalalalalalalalalalal</information>
+</bean>
