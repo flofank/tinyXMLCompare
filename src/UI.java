@@ -11,6 +11,11 @@ import java.awt.*;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeExpansionListener;
@@ -27,17 +32,20 @@ public class UI extends JFrame implements DropTargetListener {
 	private DropTarget drop_a, drop_b;
 	private XmlTreeCellRenderer renderer = new XmlTreeCellRenderer();
 	private JPanel pn_top;
-	private JPanel pn_center;
 	private JPanel pn_paths;
-	private JPanel pn_path_a;
-	private JPanel pn_path_b;
 	private JSplitPane splitPane;
+	//Main UI
+	//Top Interface
+	//MenuBar
 	private JMenuBar menuBar;
-	private JMenu mnFile;
-	private JMenu mnAction;
-	private JMenu mnOptions;
-	private JMenu mnInformation;
+	private JMenu mnFile, mnAction, mnOptions, mnInformation;
 	private JMenuItem mntmCompare;
+	private JRadioButtonMenuItem mnrd_AutoExp;
+	private JTextField txtSuche;
+	private JButton btn_file_a, btn_file_b;
+	private JMenuItem mntmSearch;
+	
+	
 	/**
 	 * Launch the application.
 	 */
@@ -54,16 +62,27 @@ public class UI extends JFrame implements DropTargetListener {
 	 */
 	public UI() {
 		super();
-		
+		initMenu();		
+		initUI();
+		setVisible(true);
+		splitPane.setDividerLocation(0.5); //Has to stand after setVisible
+	}
+	/**
+	 * Initialize the MenuBar
+	 */
+	private void initMenu() {
 		menuBar = new JMenuBar();
-		setJMenuBar(menuBar);
-		
+		this.setJMenuBar(menuBar);
+		//Menus
 		mnFile = new JMenu("File");
 		menuBar.add(mnFile);
-		
 		mnAction = new JMenu("Action");
 		menuBar.add(mnAction);
-		
+		mnOptions = new JMenu("Options");
+		menuBar.add(mnOptions);
+		mnInformation = new JMenu("Information");
+		menuBar.add(mnInformation);
+		//Actions
 		mntmCompare = new JMenuItem("Compare");
 		mntmCompare.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
@@ -71,82 +90,61 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 		});
 		mnAction.add(mntmCompare);
-		
-		mnOptions = new JMenu("Options");
-		menuBar.add(mnOptions);
-		
-		mnInformation = new JMenu("Information");
-		menuBar.add(mnInformation);
-		initialize();
+		mntmSearch = new JMenuItem("Search");
+		mnAction.add(mntmSearch);
+		//Options		
+		mnrd_AutoExp = new JRadioButtonMenuItem("Automatic Expand");
+		mnOptions.add(mnrd_AutoExp);		
 	}
 
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {		
+	private void initUI() {		
+		//Initialize JFrame
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {System.out.println("Setting look an feel failed");}
-		setTitle("tinyXMLCompare");
-		setBounds(100, 100, 900, 740);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		getContentPane().setLayout(new BorderLayout(0, 0));
+		this.setTitle("tinyXMLCompare");
+		this.setBounds(100, 100, 900, 740);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.getContentPane().setLayout(new BorderLayout(0, 0));
 		
-		pn_top = new JPanel();
-		getContentPane().add(pn_top, BorderLayout.NORTH);
-		pn_top.setLayout(new BorderLayout(0, 0));
-		//Buttons
-		JButton btn_file_a = new JButton("");
-		btn_file_a.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
-		pn_top.add(btn_file_a, BorderLayout.WEST);
-		btn_file_a.setToolTipText("Load XML Left");
-		btn_file_a.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				chooseFile(true);
-			}
-		});
-		JButton btn_file_b = new JButton("");
-		btn_file_b.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
-		pn_top.add(btn_file_b, BorderLayout.EAST);
-		btn_file_b.setToolTipText("Load XML Right");
-		btn_file_b.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chooseFile(false);
-			}
-		});
-		
-		pn_paths = new JPanel();
-		pn_top.add(pn_paths, BorderLayout.CENTER);
-		pn_paths.setLayout(new GridLayout(0, 2, 0, 0));
-		
-		pn_path_a = new JPanel();
-		pn_paths.add(pn_path_a);
-		pn_path_a.setLayout(null);
-		//Labels
-		lbl_path_a = new JLabel("Path a");
-		lbl_path_a.setBounds(5, 5, 31, 14);
-		pn_path_a.add(lbl_path_a);
-		lbl_path_a.setBackground(Color.WHITE);
-		
-		pn_path_b = new JPanel();
-		pn_paths.add(pn_path_b);
-		pn_path_b.setLayout(null);
-		lbl_path_b = new JLabel("Path b");
-		lbl_path_b.setBounds(355, 5, 31, 14);
-		pn_path_b.add(lbl_path_b);
-		lbl_path_b.setBackground(Color.WHITE);
-		lbl_path_b.setHorizontalAlignment(SwingConstants.RIGHT);
-		
+		initTrees();
+		initTopInterface();
+	}
+	
+	/**
+	 * Initialize the trees
+	 */
+	private void initTrees() {
+		//Panes
 		splitPane = new JSplitPane();
-		getContentPane().add(splitPane, BorderLayout.CENTER);
-		//JScrollPanes
+		this.getContentPane().add(splitPane, BorderLayout.CENTER);
 		scrollPane_a = new JScrollPane();
 		scrollPane_b = new JScrollPane();
 		splitPane.setLeftComponent(scrollPane_a);
 		splitPane.setRightComponent(scrollPane_b);
-		System.out.println(splitPane.getWidth());
+		
 		//Trees
 		tree_a = new JTree(new DefaultTreeModel(new XmlTreeNode("EmptyXml", null)));
+		tree_a.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tree_a.setCellRenderer(renderer);
+		tree_a.setFocusable(true);
+		scrollPane_a.setViewportView(tree_a);
+		tree_b = new JTree(new DefaultTreeModel(new XmlTreeNode("EmptyXml", null)));
+		tree_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
+		tree_b.setCellRenderer(renderer);	
+		scrollPane_b.setViewportView(tree_b);
+		
+		addTreeListeners();
+	}
+	/**
+	 * Add action Listeners to trees
+	 */
+	private void addTreeListeners() {
+		//Expand an Collapse Listeners
 		tree_a.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
 				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
@@ -167,28 +165,6 @@ public class UI extends JFrame implements DropTargetListener {
 				}
 			}
 		});
-		tree_a.addTreeSelectionListener(new TreeSelectionListener() {
-			public void valueChanged(TreeSelectionEvent arg0) {
-				try {
-					String id = ((XmlTreeNode) tree_a.getLastSelectedPathComponent()).getMatch_id();
-					if (id != null) {
-						XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
-						if (b != null) {
-							tree_b.setSelectionPath(b.getPath());
-						}
-					}
-				} catch (Exception e) {e.printStackTrace();}
-			}
-		});
-		tree_a.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tree_a.setCellRenderer(renderer);
-		tree_a.setFocusable(true);
-		scrollPane_a.setViewportView(tree_a);
-		tree_a.setDragEnabled(true);
-		drop_a = new DropTarget(tree_a, this);
-		tree_b = new JTree(new DefaultTreeModel(new XmlTreeNode("EmptyXml", null)));
-		tree_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		tree_b.setCellRenderer(renderer);
 		tree_b.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
 				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
@@ -209,6 +185,21 @@ public class UI extends JFrame implements DropTargetListener {
 				}
 			}
 		});
+		
+		//Select Listeners
+		tree_a.addTreeSelectionListener(new TreeSelectionListener() {
+			public void valueChanged(TreeSelectionEvent arg0) {
+				try {
+					String id = ((XmlTreeNode) tree_a.getLastSelectedPathComponent()).getMatch_id();
+					if (id != null) {
+						XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
+						if (b != null) {
+							tree_b.setSelectionPath(b.getPath());
+						}
+					}
+				} catch (Exception e) {e.printStackTrace();}
+			}
+		});
 		tree_b.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				try {
@@ -222,40 +213,96 @@ public class UI extends JFrame implements DropTargetListener {
 				} catch (Exception e) {e.printStackTrace();}
 			}
 		});
-		scrollPane_b.setViewportView(tree_b);
-		setVisible(true);
-		splitPane.setDividerLocation(0.5);
+		
+		//Drop Targets
+		tree_a.setDragEnabled(true);
 		tree_b.setDragEnabled(true);
+		drop_a = new DropTarget(tree_a, this);
 		drop_b = new DropTarget(tree_b, this);
 	}
+	/**
+	 * Initialize the Top Interface
+	 */
+	private void initTopInterface() {
+		pn_top = new JPanel();
+		this.getContentPane().add(pn_top, BorderLayout.NORTH);
+		pn_top.setLayout(new BorderLayout(5, 0));
+		//File Loading Buttons
+		btn_file_a = new JButton("");
+		btn_file_a.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
+		btn_file_a.setToolTipText("Load XML Left");
+		btn_file_a.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				chooseFile(true);
+			}
+		});
+		pn_top.add(btn_file_a, BorderLayout.WEST);
+		btn_file_b = new JButton("");
+		btn_file_b.setIcon(new ImageIcon(UI.class.getResource("/icons/open_16.png")));
+		btn_file_b.setToolTipText("Load XML Right");
+		btn_file_b.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chooseFile(false);
+			}
+		});
+		pn_top.add(btn_file_b, BorderLayout.EAST);
+		
+		//Path Labels and Search Field
+		pn_paths = new JPanel();
+		pn_paths.setLayout(new GridLayout(0, 3, 0, 0));
+		pn_top.add(pn_paths, BorderLayout.CENTER);
+		lbl_path_a = new JLabel("Path a");
+		lbl_path_a.setBackground(Color.WHITE);
+		pn_paths.add(lbl_path_a);
+		txtSuche = new JTextField();
+		txtSuche.addInputMethodListener(new InputMethodListener() {
+			public void caretPositionChanged(InputMethodEvent arg0) {}
+			public void inputMethodTextChanged(InputMethodEvent arg0) {
+			}
+		});
+		txtSuche.setText("Suche ...");
+		pn_paths.add(txtSuche);
+		lbl_path_b = new JLabel("Path b");
+		lbl_path_b.setBackground(Color.WHITE);
+		lbl_path_b.setHorizontalAlignment(SwingConstants.RIGHT);
+		pn_paths.add(lbl_path_b);
+	}
 	
+	/**
+	 * Show FileChooseDialog and set chosen File to loadFile method
+	 * @param left
+	 */
 	private void chooseFile(boolean left) {
 		JFileChooser fc = new JFileChooser();
 		fc.setDialogTitle("Choose a xml");
 		fc.showOpenDialog(this);
 		File f = fc.getSelectedFile();
-		loadFile(f.getAbsolutePath(), left);		
+		loadFile(f, left);		
 	}
-	
-	private void loadFile(String path, boolean left) {
+	/**
+	 * Load given File into given tree
+	 * @param f File to load 
+	 * @param left if left tree is target
+	 */
+	private void loadFile(File f, boolean left) {
 		try {
 			renderer.setCompared(false);
 			if (left) {
-				lbl_path_a.setText(path);
-				xml_a = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(path));
+				lbl_path_a.setText(f.getAbsolutePath());
+				xml_a = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
 				root_a = XmlUtilities.buildTree(xml_a);
 				tree_a.setModel(new DefaultTreeModel(root_a));
 				this.repaint();
 				
 			} else {
-				lbl_path_b.setText(path);
-				xml_b = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(new File(path));
+				lbl_path_b.setText(f.getAbsolutePath());
+				xml_b = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
 				root_b = XmlUtilities.buildTree(xml_b);
 				tree_b.setModel(new DefaultTreeModel(root_b));
 				this.repaint();
 			}
 		} catch (Exception e) {
-			System.out.println("Reading file failed for path: " + path);
+			System.out.println("Reading file failed for path: " + f.getAbsolutePath());
 			e.printStackTrace();
 		}
 	}
@@ -267,6 +314,9 @@ public class UI extends JFrame implements DropTargetListener {
 	}
 	
 
+	/**
+	 * Drag and Drop Interface implementations
+	 */
 	@Override
 	public void dragEnter(DropTargetDragEvent arg0) {}
 	public void dragExit(DropTargetEvent arg0) {}
@@ -280,13 +330,13 @@ public class UI extends JFrame implements DropTargetListener {
 				List files = (List) tr.getTransferData(DataFlavor.javaFileListFlavor);
 				if (files.size() == 1) {
 					if (e.getDropTargetContext().getDropTarget() == drop_a) {
-						loadFile(((File) files.get(0)).getAbsolutePath(), true);
+						loadFile((File) files.get(0), true);
 					} else if (e.getDropTargetContext().getDropTarget() == drop_b) {
-						loadFile(((File) files.get(0)).getAbsolutePath(), false);
+						loadFile((File) files.get(0), false);
 					}
 				} else if (files.size() > 1) {
-					loadFile(((File) files.get(0)).getAbsolutePath(), true);
-					loadFile(((File) files.get(1)).getAbsolutePath(), false);
+					loadFile((File) files.get(0), true);
+					loadFile((File) files.get(1), false);
 				}
 			}
 		} catch (Exception e2) {
