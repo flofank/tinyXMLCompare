@@ -5,6 +5,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 
 import javax.swing.*;
+
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.*;
@@ -20,10 +21,12 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeExpansionListener;
 import javax.swing.event.TreeExpansionEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 
 //Comment
-public class UI extends JFrame implements DropTargetListener {	
+public class UI extends JFrame implements DropTargetListener {		
 	private Document xml_a, xml_b;
 	private XmlTreeNode root_a, root_b;
 	
@@ -39,12 +42,12 @@ public class UI extends JFrame implements DropTargetListener {
 	private JPanel pn_paths;
 	private JLabel lbl_path_a, lbl_path_b;
 	private JButton btn_file_a, btn_file_b;
-	private JTextField txtSuche;
+	private JTextField txtSearch;
 	//MenuBar
 	private JMenuBar menuBar;
 	private JMenu mnFile, mnAction, mnOptions, mnInformation;
 	private JMenuItem mntmCompare, mntmSearch;
-	private JRadioButtonMenuItem mnrd_AutoExp;
+	private JCheckBoxMenuItem mncb_AutoExp, mncb_regex;
 	private JMenu mnView;
 	private JMenuItem mntmCollapseAll;
 	private JMenuItem mntmExpandAll;
@@ -122,8 +125,21 @@ public class UI extends JFrame implements DropTargetListener {
 		mntmSearch = new JMenuItem("Search");
 		mnAction.add(mntmSearch);
 		//Options		
-		mnrd_AutoExp = new JRadioButtonMenuItem("Automatic Expand");
-		mnOptions.add(mnrd_AutoExp);		
+		mncb_AutoExp = new JCheckBoxMenuItem("Automatic Expand");
+		mncb_AutoExp.setSelected(true);
+		mnOptions.add(mncb_AutoExp);		
+		mncb_regex = new JCheckBoxMenuItem("Regex Search");
+		mncb_regex.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (mncb_regex.getState()) {
+					txtSearch.setBackground(Color.YELLOW);
+				} else {
+					txtSearch.setBackground(Color.WHITE);
+				}
+				repaint();
+			}
+		});
+		mnOptions.add(mncb_regex);
 	}
 
 	
@@ -166,7 +182,6 @@ public class UI extends JFrame implements DropTargetListener {
 		tree_b.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		tree_b.setCellRenderer(renderer);	
 		scrollPane_b.setViewportView(tree_b);
-		
 		addTreeListeners();
 	}
 	/**
@@ -177,7 +192,7 @@ public class UI extends JFrame implements DropTargetListener {
 		tree_a.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
 				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id > 0) {
+				if (id > 0 && mncb_AutoExp.getState()) {
 					XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
 					if (b != null) {
 						tree_b.collapsePath(b.getPath());
@@ -186,7 +201,7 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 			public void treeExpanded(TreeExpansionEvent event) {
 				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id > 0) {
+				if (id > 0 && mncb_AutoExp.getState()) {
 					XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
 					if (b != null) {
 						tree_b.expandPath(b.getPath());
@@ -197,7 +212,7 @@ public class UI extends JFrame implements DropTargetListener {
 		tree_b.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
 				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id > 0) {
+				if (id > 0 && mncb_AutoExp.getState()) {
 					XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
 					if (a != null) {
 						tree_a.collapsePath(a.getPath());
@@ -206,7 +221,7 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 			public void treeExpanded(TreeExpansionEvent event) {
 				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id > 0) {
+				if (id > 0 && mncb_AutoExp.getState()) {
 					XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
 					if (a != null) {
 						tree_a.expandPath(a.getPath());
@@ -220,11 +235,13 @@ public class UI extends JFrame implements DropTargetListener {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				try {
 					XmlTreeNode node = (XmlTreeNode) tree_a.getLastSelectedPathComponent();
-					int id = node.getMatch_id();
-					if (id > 0) {
-						XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
-						if (b != null) {
-							tree_b.setSelectionPath(b.getPath());
+					if (node != null) {
+						int id = node.getMatch_id();
+						if (id > 0) {
+							XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
+							if (b != null) {
+								tree_b.setSelectionPath(b.getPath());
+							}
 						}
 					}
 				} catch (Exception e) {e.printStackTrace();}
@@ -234,17 +251,18 @@ public class UI extends JFrame implements DropTargetListener {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				try {
 					XmlTreeNode node = (XmlTreeNode) tree_b.getLastSelectedPathComponent();
-					int id = node.getMatch_id();
-					if (id > 0) {
-						XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
-						if (a != null) {
-							tree_a.setSelectionPath(a.getPath());
+					if (node != null) {
+						int id = node.getMatch_id();
+						if (id > 0) {
+							XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
+							if (a != null) {
+								tree_a.setSelectionPath(a.getPath());
+							}
 						}
 					}
 				} catch (Exception e) {e.printStackTrace();}
 			}
 		});
-		
 		//Drop Targets
 		tree_a.setDragEnabled(true);
 		tree_b.setDragEnabled(true);
@@ -285,16 +303,16 @@ public class UI extends JFrame implements DropTargetListener {
 		lbl_path_a = new JLabel("Path a");
 		lbl_path_a.setBackground(Color.WHITE);
 		pn_paths.add(lbl_path_a);
-		txtSuche = new JTextField();
-		txtSuche.addKeyListener(new KeyAdapter() {
+		txtSearch = new JTextField();
+		txtSearch.addKeyListener(new KeyAdapter() {
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER) {
-					if (txtSuche.getText().equals("")) {
-						txtSuche.setText("Suche ...");
+					if (txtSearch.getText().equals("")) {
+						txtSearch.setText("Search ...");
 						renderer.setSearching(false);
 					} else {
 						renderer.setSearching(true);
-						if (XmlUtilities.find(txtSuche.getText(), false, root_a) | XmlUtilities.find(txtSuche.getText(), false, root_b)) {
+						if (XmlUtilities.find(txtSearch.getText(), mncb_regex.getState(), root_a) | XmlUtilities.find(txtSearch.getText(), mncb_regex.getState(), root_b)) {
 							root_a.collapseAll(tree_a);
 							root_b.collapseAll(tree_b);
 							root_a.expandSearchMatches(tree_a);
@@ -305,8 +323,8 @@ public class UI extends JFrame implements DropTargetListener {
 				}
 			}
 		});
-		txtSuche.setText("Suche ...");
-		pn_paths.add(txtSuche);
+		txtSearch.setText("Search ...");
+		pn_paths.add(txtSearch);
 		lbl_path_b = new JLabel("Path b");
 		lbl_path_b.setBackground(Color.WHITE);
 		lbl_path_b.setHorizontalAlignment(SwingConstants.RIGHT);

@@ -130,12 +130,21 @@ public class XmlUtilities {
 	
 	public static Boolean find(String search, Boolean regex, XmlTreeNode node) {
 		Boolean found = false;
-		if (node.toString().contains(search)) {
-			node.setSearchMatch(true);
-			found = true;
+		if (regex) {
+			if (node.toString().split(search).length > 1) {
+				node.setSearchMatch(true);
+				found = true;
+			} else {
+				node.setSearchMatch(false);
+			}
 		} else {
-			node.setSearchMatch(false);
-		}
+			if (node.toString().contains(search)) {
+				node.setSearchMatch(true);
+				found = true;
+			} else {
+				node.setSearchMatch(false);
+			}
+		}		
 		for (XmlTreeNode child : node.getChilds()) {
 			if (find(search, regex, child)) {
 				found = true;

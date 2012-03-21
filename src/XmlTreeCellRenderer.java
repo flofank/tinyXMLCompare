@@ -9,6 +9,13 @@ public class XmlTreeCellRenderer extends DefaultTreeCellRenderer{
 	private boolean compared = false;
 	private boolean searching = false;
 
+	public XmlTreeCellRenderer() {
+		super();
+		setOpenIcon(null);
+		setClosedIcon(null);
+		setLeafIcon(null);
+	}
+	
 	@Override
 	public Component getTreeCellRendererComponent(JTree arg0, Object arg1, boolean arg2, boolean arg3, boolean arg4, int arg5, boolean arg6) {
 		Component comp = super.getTreeCellRendererComponent(arg0, arg1, arg2, arg3, arg4, arg5, arg6);
