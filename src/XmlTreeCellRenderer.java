@@ -6,6 +6,7 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 
 public class XmlTreeCellRenderer extends DefaultTreeCellRenderer{
+	private static final long serialVersionUID = -2254522696802482663L;
 	private boolean compared = false;
 	private boolean searching = false;
 

@@ -1,5 +1,3 @@
-import java.util.ArrayList;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 
@@ -7,6 +5,11 @@ import org.w3c.dom.Node;
 public class XmlUtilities {
 	private static int match_id = 0;
 	
+	/**
+	 * Tries to find Matching nodes in tow given XML Trees
+	 * @param root_a
+	 * @param root_b
+	 */
 	public static void matchTrees(XmlTreeNode root_a, XmlTreeNode root_b) {
 		try {
 			if (root_a.toString().equals(root_b.toString())) {
@@ -19,9 +22,12 @@ public class XmlUtilities {
 			e.printStackTrace();
 		}
 	}
-	
+	/**
+	 * Finds Matching nodes in two Xml branches and marks them as matching
+	 * @param branch_a
+	 * @param branch_b
+	 */
 	public static void matchBranches(XmlTreeNode branch_a, XmlTreeNode branch_b) {
-		int id_counter = 0;
 		for (XmlTreeNode n_a : branch_a.getChilds()) {
 			for (XmlTreeNode n_b : branch_b.getChilds()) {
 				if (!n_a.getName().equals(n_b.getName()) || n_b.hasMatch()) {
@@ -46,6 +52,13 @@ public class XmlUtilities {
 		}
 	}
 	
+	/**
+	 * Sets the Matching Properties of two Nodes found equal. 
+	 * @param node_a
+	 * @param node_b
+	 * @param equal if nodes are totally equal
+	 * Generates a unique id and assigns it to the matched nodes.
+	 */
 	private static void matchNodes(XmlTreeNode node_a, XmlTreeNode node_b, Boolean equal) {
 		match_id++;
 		node_a.setMatch_id(match_id);
@@ -59,6 +72,12 @@ public class XmlUtilities {
 		}
 	}
 	
+	/**
+	 * Takes a XML Document and parses it into a XmlTree (w3c.dom -> XmlTreeNode)
+	 * @param d Xml Document
+	 * @return
+	 * @throws Exception if some Error occurs during the parsing process
+	 */
 	public static XmlTreeNode buildTree(Document d) throws Exception {
 		Node r = d.getFirstChild();
 		XmlTreeNode root = new XmlTreeNode(r.getNodeName(), null);
@@ -76,7 +95,12 @@ public class XmlUtilities {
 		}
 		return root;
 	}
-	
+	/**
+	 * Recursivly builds up a XmlLeaf from an Node (w3c.dom -> XmlTreeNode)
+	 * @param l w3c.dom.Node
+	 * @param parent the parent XmlTreeNode (null if given Node is root)
+	 * @return a leaf as XmlTreeNode
+	 */
 	public static XmlTreeNode buildLeaf(Node l, XmlTreeNode parent) {
 		XmlTreeNode leaf = new XmlTreeNode(l.getNodeName(), parent);
 		//Set attributes
@@ -96,25 +120,31 @@ public class XmlUtilities {
 	}
 	
 	public static void printTree(XmlTreeNode root, int lev) {
-		String tabs = "";
-		for (int i = 0; i < lev; i++) {
-			tabs += "\t";
-		}
-		String opentag = tabs + "<" + root.getName();
-		for (String key : root.getAttributes().keySet()) {
-			opentag += " " + key + "=\"" + root.getAttribute(key) + "\"";
-		}
-		System.out.println(opentag + ">");
-		if (root.hasText()) {
-			System.out.println(tabs + "\t" + root.getText());
-		} else {
-			for (XmlTreeNode node : root.getChilds()) {
-				printTree(node, lev + 1);
-			}
-		}
-		System.out.println(tabs + "</" + root.getName() + ">");	
+//		String tabs = "";
+//		for (int i = 0; i < lev; i++) {
+//			tabs += "\t";
+//		}
+//		String opentag = tabs + "<" + root.getName();
+//		for (String key : root.getAttributes().keySet()) {
+//			opentag += " " + key + "=\"" + root.getAttribute(key) + "\"";
+//		}
+//		System.out.println(opentag + ">");
+//		if (root.hasText()) {
+//			System.out.println(tabs + "\t" + root.getText());
+//		} else {
+//			for (XmlTreeNode node : root.getChilds()) {
+//				printTree(node, lev + 1);
+//			}
+//		}
+//		System.out.println(tabs + "</" + root.getName() + ">");	
 	}
 	
+	/**
+	 * Runs recursivly trough a Tree of XmlTreeNode and finds the node with given id
+	 * @param root tree-root
+	 * @param id 
+	 * @return node with given id if found in tree
+	 */
 	public static XmlTreeNode getNodeByID(XmlTreeNode root, int id) {
 		if (root.getMatch_id() == id) {
 			return root;
@@ -128,6 +158,13 @@ public class XmlUtilities {
 		return null;
 	}
 	
+	/**
+	 * Finds all nodes containing the given String or regex and marks them as SearchResult
+	 * @param search Search String (or regular expression)
+	 * @param regex Set to true if search string is a regex
+	 * @param node xmlTree to search in
+	 * @return true if one or more matches were found
+	 */
 	public static Boolean find(String search, Boolean regex, XmlTreeNode node) {
 		Boolean found = false;
 		if (regex) {
