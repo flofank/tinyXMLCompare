@@ -5,13 +5,14 @@ import org.w3c.dom.Node;
 
 
 public class XmlUtilities {
+	private static int match_id = 0;
+	
 	public static void matchTrees(XmlTreeNode root_a, XmlTreeNode root_b) {
 		try {
-			root_a.setMatch_id("1");
-			root_b.setMatch_id("1");
 			if (root_a.toString().equals(root_b.toString())) {
-				root_a.setEqual(true);
-				root_b.setEqual(true);
+				matchNodes(root_a, root_b, true);
+			} else {
+				matchNodes(root_a, root_b, false);
 			}
 			matchBranches(root_a, root_b);			
 		} catch (Exception e) {
@@ -28,10 +29,7 @@ public class XmlUtilities {
 					continue;
 				} else if (n_a.toString().equals(n_b.toString())) {
 					//Totally equal
-					n_a.setEqual(true);
-					n_b.setEqual(true);
-					n_a.setMatch_id("" + ++id_counter);
-					n_b.setMatch_id("" + id_counter);
+					matchNodes(n_a, n_b, true);
 					matchBranches(n_a, n_b);
 					break;
 				} else if (n_a.getAttributes().size() != 0 && n_b.getAttributes().size() != 0) { 
@@ -39,15 +37,25 @@ public class XmlUtilities {
 					String firstKey_b = (String) n_b.getAttributes().keySet().toArray()[0];
 					if (firstKey_a.equals(firstKey_b) && n_a.getAttribute(firstKey_a).equals(n_b.getAttribute(firstKey_a))) {
 						//Partial match
-						n_a.setEqual(false);
-						n_b.setEqual(false);
-						n_a.setMatch_id("" + ++id_counter);
-						n_b.setMatch_id("" + id_counter);
+						matchNodes(n_a, n_b, false);
 						matchBranches(n_a, n_b);
 						break;
 					}
 				} 
 			}
+		}
+	}
+	
+	private static void matchNodes(XmlTreeNode node_a, XmlTreeNode node_b, Boolean equal) {
+		match_id++;
+		node_a.setMatch_id(match_id);
+		node_b.setMatch_id(match_id);	
+		if (equal) {
+			node_a.setEqual(true);
+			node_b.setEqual(true);
+		} else {
+			node_a.setEqual(false);
+			node_b.setEqual(false);
 		}
 	}
 	
@@ -107,14 +115,14 @@ public class XmlUtilities {
 		System.out.println(tabs + "</" + root.getName() + ">");	
 	}
 	
-	public static XmlTreeNode getNodeByID(XmlTreeNode root, String id) {
-		if (root.getMatch_id().equals(id)) {
+	public static XmlTreeNode getNodeByID(XmlTreeNode root, int id) {
+		if (root.getMatch_id() == id) {
 			return root;
 		}
 		for (XmlTreeNode n : root.getChilds()) {
-			String n_id = n.getMatch_id();
-			if (n_id != null && n_id.equals(id.substring(0, n_id.length()))) {
-				return getNodeByID(n, id);
+			XmlTreeNode node = getNodeByID(n, id);
+			if (node != null) {
+				return node;
 			}
 		}
 		return null;

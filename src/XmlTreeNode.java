@@ -16,7 +16,7 @@ public class XmlTreeNode implements TreeNode {
 	private ArrayList<XmlTreeNode> children = new ArrayList<XmlTreeNode>();
 	
 	//Matching properties
-	private String match_id;		//Two matching nodes from compared xmls are given the same id (Maybe ids could be inherited)
+	private int match_id;		//Two matching nodes from compared xmls are given the same id (Maybe ids could be inherited)
 	private boolean equal;	//True if matching node from other xml is all the same 
 	private boolean searchMatch;
 
@@ -93,20 +93,14 @@ public class XmlTreeNode implements TreeNode {
 	
 	
 
-	public String getMatch_id() {
-		if (match_id == null) {
-			return null;
-		} else if (parent != null) {
-			return parent.getMatch_id() + "_" + match_id;
-		} else {
-			return match_id;
-		}
+	public int getMatch_id() {
+		return match_id;
 	}
-	public void setMatch_id(String match_id) {
+	public void setMatch_id(int match_id) {
 		this.match_id = match_id;
 	}
 	public boolean hasMatch() {
-		if (this.match_id != null) {
+		if (this.match_id > 0) {
 			return true;
 		}
 		return false;
@@ -148,8 +142,16 @@ public class XmlTreeNode implements TreeNode {
 			child.collapseAll(tree);
 		}
 		if (parent != null) {
-			tree.collapsePath(parent.getPath());
+			tree.collapsePath(getPath());
 		}		
+	}
+	public void expandAll(JTree tree) {
+		for (XmlTreeNode child : children) {
+			child.expandAll(tree);
+		}
+		if (children.size() == 0) {
+			tree.expandPath(parent.getPath());
+		}	
 	}
 	/**
 	 * Getters and Setters from here on

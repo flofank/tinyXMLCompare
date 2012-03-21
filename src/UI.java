@@ -47,6 +47,7 @@ public class UI extends JFrame implements DropTargetListener {
 	private JRadioButtonMenuItem mnrd_AutoExp;
 	private JMenu mnView;
 	private JMenuItem mntmCollapseAll;
+	private JMenuItem mntmExpandAll;
 	
 	
 	/**
@@ -99,6 +100,15 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 		});
 		mnView.add(mntmCollapseAll);
+		
+		mntmExpandAll = new JMenuItem("Expand All");
+		mntmExpandAll.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				root_a.expandAll(tree_a);
+				root_b.expandAll(tree_b);
+			}
+		});
+		mnView.add(mntmExpandAll);
 		mnInformation = new JMenu("Information");
 		menuBar.add(mnInformation);
 		//Actions
@@ -166,8 +176,8 @@ public class UI extends JFrame implements DropTargetListener {
 		//Expand an Collapse Listeners
 		tree_a.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
-				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id != null) {
+				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
+				if (id > 0) {
 					XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
 					if (b != null) {
 						tree_b.collapsePath(b.getPath());
@@ -175,8 +185,8 @@ public class UI extends JFrame implements DropTargetListener {
 				}
 			}
 			public void treeExpanded(TreeExpansionEvent event) {
-				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id != null) {
+				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
+				if (id > 0) {
 					XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
 					if (b != null) {
 						tree_b.expandPath(b.getPath());
@@ -186,8 +196,8 @@ public class UI extends JFrame implements DropTargetListener {
 		});
 		tree_b.addTreeExpansionListener(new TreeExpansionListener() {
 			public void treeCollapsed(TreeExpansionEvent event) {
-				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id != null) {
+				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
+				if (id > 0) {
 					XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
 					if (a != null) {
 						tree_a.collapsePath(a.getPath());
@@ -195,8 +205,8 @@ public class UI extends JFrame implements DropTargetListener {
 				}
 			}
 			public void treeExpanded(TreeExpansionEvent event) {
-				String id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
-				if (id != null) {
+				int id = ((XmlTreeNode)  event.getPath().getLastPathComponent()).getMatch_id();
+				if (id > 0) {
 					XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
 					if (a != null) {
 						tree_a.expandPath(a.getPath());
@@ -209,8 +219,9 @@ public class UI extends JFrame implements DropTargetListener {
 		tree_a.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				try {
-					String id = ((XmlTreeNode) tree_a.getLastSelectedPathComponent()).getMatch_id();
-					if (id != null) {
+					XmlTreeNode node = (XmlTreeNode) tree_a.getLastSelectedPathComponent();
+					int id = node.getMatch_id();
+					if (id > 0) {
 						XmlTreeNode b = XmlUtilities.getNodeByID(root_b, id);
 						if (b != null) {
 							tree_b.setSelectionPath(b.getPath());
@@ -222,8 +233,9 @@ public class UI extends JFrame implements DropTargetListener {
 		tree_b.addTreeSelectionListener(new TreeSelectionListener() {
 			public void valueChanged(TreeSelectionEvent arg0) {
 				try {
-					String id = ((XmlTreeNode) tree_b.getLastSelectedPathComponent()).getMatch_id();
-					if (id != null) {
+					XmlTreeNode node = (XmlTreeNode) tree_b.getLastSelectedPathComponent();
+					int id = node.getMatch_id();
+					if (id > 0) {
 						XmlTreeNode a = XmlUtilities.getNodeByID(root_a, id);
 						if (a != null) {
 							tree_a.setSelectionPath(a.getPath());
