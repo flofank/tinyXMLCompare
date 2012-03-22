@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 
 
 public class InformationDialog extends JDialog{
+	private static final long serialVersionUID = -9061081389547704985L;
+
 	public InformationDialog(JFrame owner) {
 		super(owner);
 		setTitle("tinyXMLCompare - Application Informations");
