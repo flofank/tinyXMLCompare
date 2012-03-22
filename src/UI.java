@@ -71,6 +71,10 @@ public class UI extends JFrame implements DropTargetListener {
 		initTrees();		
 		setVisible(true);
 		splitPane.setDividerLocation(divider_location); //Has to stand after setVisible
+		
+		Icon icon = new ImageIcon(UI.class.getResource("/icons/tinyXMLCompare_64.png"));
+		String aboutGreeting = "Ein Tool der Schweizerischen Post";
+		JOptionPane.showMessageDialog(this,aboutGreeting, "tinyXMLCompare",JOptionPane.PLAIN_MESSAGE,icon);
 	}
 	/**
 	 * Initialize the Application Window (JFrame)
@@ -80,6 +84,7 @@ public class UI extends JFrame implements DropTargetListener {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {System.out.println("Setting look an feel failed");}
 		this.setTitle("tinyXMLCompare");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/icons/tinyXMLCompare.png")));
 		this.setBounds(100, 100, 900, 740);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new BorderLayout(0, 5));

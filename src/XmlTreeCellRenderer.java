@@ -27,10 +27,10 @@ public class XmlTreeCellRenderer extends DefaultTreeCellRenderer{
 		} else if (compared) {
 			if (node.hasMatch()) {
 				if (!node.isEqual()) {
-					setBackgroundNonSelectionColor(new Color(255, 240, 128));
+					setBackgroundNonSelectionColor(new Color(255, 255, 128));
 				}
 			} else {
-				setBackgroundNonSelectionColor(new Color(255,128,128));
+				setBackgroundNonSelectionColor(new Color(255,64,64));
 			}
 		}
 		return comp;
