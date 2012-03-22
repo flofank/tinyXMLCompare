@@ -97,6 +97,11 @@ public class UI extends JFrame implements DropTargetListener {
 		mnView = new JMenu("View");
 		menuBar.add(mnView);
 		mnInformation = new JMenu("Information");
+		mnInformation.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showInformation();
+			}
+		});
 		menuBar.add(mnInformation);
 		//View
 		mntmCollapseAll = new JMenuItem("Collapse All");
@@ -386,6 +391,11 @@ public class UI extends JFrame implements DropTargetListener {
 	private void expandAll() {
 		root_a.expandAll(tree_a);
 		root_b.expandAll(tree_b);
+	}
+	
+	private void showInformation() {
+		JDialog inf = new InformationDialog(this);
+		inf.show();
 	}
 
 
