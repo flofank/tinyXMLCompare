@@ -10,6 +10,8 @@ import java.awt.event.*;
 import java.awt.*;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
 
 
 //Comment
@@ -17,6 +19,7 @@ public class UI extends JFrame implements DropTargetListener {
 	private static final long serialVersionUID = 1882056950753838627L;
 	private Document xml_a, xml_b;
 	private XmlTreeNode root_a, root_b;
+	private double divider_location = 0.5d;
 	
 	private DropTarget drop_a, drop_b;
 	private XmlTreeCellRenderer renderer = new XmlTreeCellRenderer();
@@ -67,7 +70,7 @@ public class UI extends JFrame implements DropTargetListener {
 		initTopInterface();
 		initTrees();		
 		setVisible(true);
-		splitPane.setDividerLocation(0.5); //Has to stand after setVisible
+		splitPane.setDividerLocation(divider_location); //Has to stand after setVisible
 	}
 	/**
 	 * Initialize the Application Window (JFrame)
@@ -80,6 +83,12 @@ public class UI extends JFrame implements DropTargetListener {
 		this.setBounds(100, 100, 900, 740);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new BorderLayout(0, 5));
+		addComponentListener(new ComponentAdapter() {
+			public void componentResized(ComponentEvent arg0) {
+				splitPane.setDividerLocation(divider_location);
+				System.out.println("Resized");
+			}
+		});
 	}
 	/**
 	 * Initialize the MenuBar
@@ -88,8 +97,6 @@ public class UI extends JFrame implements DropTargetListener {
 		menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		//Menus
-		mnFile = new JMenu("File");
-		menuBar.add(mnFile);
 		mnAction = new JMenu("Action");
 		menuBar.add(mnAction);
 		mnOptions = new JMenu("Options");
@@ -97,11 +104,6 @@ public class UI extends JFrame implements DropTargetListener {
 		mnView = new JMenu("View");
 		menuBar.add(mnView);
 		mnInformation = new JMenu("Information");
-		mnInformation.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				showInformation();
-			}
-		});
 		menuBar.add(mnInformation);
 		//View
 		mntmCollapseAll = new JMenuItem("Collapse All");
@@ -152,6 +154,14 @@ public class UI extends JFrame implements DropTargetListener {
 					txtSearch.setBackground(Color.WHITE);
 				}
 				repaint();
+			}
+		});
+		//Information
+
+		mnInformation.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
+				System.out.println("hi");
+				showInformation();
 			}
 		});
 	}
@@ -229,6 +239,11 @@ public class UI extends JFrame implements DropTargetListener {
 	private void initTrees() {
 		//Panes
 		splitPane = new JSplitPane();
+		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				divider_location = (double) splitPane.getDividerLocation() / splitPane.getWidth();
+			}
+		});
 		this.getContentPane().add(splitPane, BorderLayout.CENTER);
 		scrollPane_a = new JScrollPane();
 		scrollPane_b = new JScrollPane();

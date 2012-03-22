@@ -8,6 +8,7 @@ public class InformationDialog extends JDialog{
 	public InformationDialog(JFrame owner) {
 		super(owner);
 		setTitle("tinyXMLCompare - Application Informations");
+		setBounds(200, 200, 545, 398);
 		getContentPane().setLayout(null);
 		
 		JLabel lblNewLabel = new JLabel("tinyXMLCompare");
@@ -26,10 +27,10 @@ public class InformationDialog extends JDialog{
 		JButton btnSchliessen = new JButton("Schliessen");
 		btnSchliessen.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+				close();
 			}
 		});
-		btnSchliessen.setBounds(427, 327, 89, 23);
+		btnSchliessen.setBounds(430, 328, 89, 23);
 		getContentPane().add(btnSchliessen);
 	}
 	
