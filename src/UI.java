@@ -72,9 +72,9 @@ public class UI extends JFrame implements DropTargetListener {
 		setVisible(true);
 		splitPane.setDividerLocation(divider_location); //Has to stand after setVisible
 		
-		Icon icon = new ImageIcon(UI.class.getResource("/icons/tinyXMLCompare_64.png"));
-		String aboutGreeting = "Ein Tool der Schweizerischen Post";
-		JOptionPane.showMessageDialog(this,aboutGreeting, "tinyXMLCompare",JOptionPane.PLAIN_MESSAGE,icon);
+//		Icon icon = new ImageIcon(UI.class.getResource("/icons/tinyXMLCompare_64.png"));
+//		String aboutGreeting = "Ein Tool der Schweizerischen Post";
+//		JOptionPane.showMessageDialog(this,aboutGreeting, "tinyXMLCompare",JOptionPane.PLAIN_MESSAGE,icon);
 	}
 	/**
 	 * Initialize the Application Window (JFrame)
@@ -84,14 +84,14 @@ public class UI extends JFrame implements DropTargetListener {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {System.out.println("Setting look an feel failed");}
 		this.setTitle("tinyXMLCompare");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/icons/tinyXMLCompare.png")));
+		this.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/icons/tinyXMLCompare.png")));
 		this.setBounds(100, 100, 900, 740);
+		this.setMinimumSize(new Dimension(700,450));
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.getContentPane().setLayout(new BorderLayout(0, 5));
 		addComponentListener(new ComponentAdapter() {
 			public void componentResized(ComponentEvent arg0) {
 				splitPane.setDividerLocation(divider_location);
-				System.out.println("Resized");
 			}
 		});
 	}
@@ -162,7 +162,6 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 		});
 		//Information
-
 		mnInformation.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
 				System.out.println("hi");
@@ -246,6 +245,9 @@ public class UI extends JFrame implements DropTargetListener {
 		splitPane = new JSplitPane();
 		splitPane.addPropertyChangeListener(JSplitPane.DIVIDER_LOCATION_PROPERTY, new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent arg0) {
+				if (splitPane.getWidth() - splitPane.getDividerLocation() < 30) {
+					return;
+				}
 				divider_location = (double) splitPane.getDividerLocation() / splitPane.getWidth();
 			}
 		});
@@ -362,11 +364,12 @@ public class UI extends JFrame implements DropTargetListener {
 	 * @param left
 	 */
 	private void chooseFile(boolean left) {
-		JFileChooser fc = new JFileChooser();
-		fc.setDialogTitle("Choose a xml");
-		fc.showOpenDialog(this);
-		File f = fc.getSelectedFile();
-		loadFile(f, left);		
+		System.out.println("#######################################");
+//		JFileChooser fc = new JFileChooser();
+//		fc.setDialogTitle("Choose a xml");
+//		fc.showOpenDialog(this);
+//		File f = fc.getSelectedFile();
+//		loadFile(f, left);		
 	}
 	/**
 	 * Load given File into given tree
@@ -378,6 +381,7 @@ public class UI extends JFrame implements DropTargetListener {
 			renderer.setCompared(false);
 			if (left) {
 				lbl_path_a.setText(f.getAbsolutePath());
+				lbl_path_a.setToolTipText(f.getAbsolutePath());
 				xml_a = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
 				root_a = XmlUtilities.buildTree(xml_a);
 				tree_a.setModel(new DefaultTreeModel(root_a));
@@ -385,6 +389,7 @@ public class UI extends JFrame implements DropTargetListener {
 				
 			} else {
 				lbl_path_b.setText(f.getAbsolutePath());
+				lbl_path_b.setToolTipText(f.getAbsolutePath());
 				xml_b = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(f);
 				root_b = XmlUtilities.buildTree(xml_b);
 				tree_b.setModel(new DefaultTreeModel(root_b));
