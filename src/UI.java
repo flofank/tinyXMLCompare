@@ -71,10 +71,6 @@ public class UI extends JFrame implements DropTargetListener {
 		initTrees();		
 		setVisible(true);
 		splitPane.setDividerLocation(divider_location); //Has to stand after setVisible
-		
-//		Icon icon = new ImageIcon(UI.class.getResource("/icons/tinyXMLCompare_64.png"));
-//		String aboutGreeting = "Ein Tool der Schweizerischen Post";
-//		JOptionPane.showMessageDialog(this,aboutGreeting, "tinyXMLCompare",JOptionPane.PLAIN_MESSAGE,icon);
 	}
 	/**
 	 * Initialize the Application Window (JFrame)
@@ -364,12 +360,11 @@ public class UI extends JFrame implements DropTargetListener {
 	 * @param left
 	 */
 	private void chooseFile(boolean left) {
-		System.out.println("#######################################");
-//		JFileChooser fc = new JFileChooser();
-//		fc.setDialogTitle("Choose a xml");
-//		fc.showOpenDialog(this);
-//		File f = fc.getSelectedFile();
-//		loadFile(f, left);		
+		JFileChooser fc = new JFileChooser();
+		fc.setDialogTitle("Choose a xml");
+		fc.showOpenDialog(this);
+		File f = fc.getSelectedFile();
+		loadFile(f, left);		
 	}
 	/**
 	 * Load given File into given tree
