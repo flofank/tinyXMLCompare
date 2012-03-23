@@ -35,8 +35,8 @@ public class UI extends JFrame implements DropTargetListener {
 	private JTextField txtSearch;
 	//MenuBar
 	private JMenuBar menuBar;
-	private JMenu mnFile, mnAction, mnOptions, mnView, mnInformation;
-	private JMenuItem mntmCompare, mntmSearch, mntmCollapseAll, mntmExpandAll;
+	private JMenu mnCompare, mnOptions, mnView, mnInformation;
+	private JMenuItem mntmCollapseAll, mntmExpandAll;
 	private JCheckBoxMenuItem mncb_AutoExp, mncb_regex;
 	
 
@@ -98,8 +98,8 @@ public class UI extends JFrame implements DropTargetListener {
 		menuBar = new JMenuBar();
 		this.setJMenuBar(menuBar);
 		//Menus
-		mnAction = new JMenu("Action");
-		menuBar.add(mnAction);
+		mnCompare= new JMenu("Compare");
+		menuBar.add(mnCompare);
 		mnOptions = new JMenu("Options");
 		menuBar.add(mnOptions);
 		mnView = new JMenu("View");
@@ -111,11 +111,6 @@ public class UI extends JFrame implements DropTargetListener {
 		mnView.add(mntmCollapseAll);
 		mntmExpandAll = new JMenuItem("Expand All");
 		mnView.add(mntmExpandAll);
-		//Actions
-		mntmCompare = new JMenuItem("Compare");
-		mnAction.add(mntmCompare);
-		mntmSearch = new JMenuItem("Search");
-		mnAction.add(mntmSearch);
 		//Options		
 		mncb_AutoExp = new JCheckBoxMenuItem("Automatic Expand");
 		mncb_AutoExp.setSelected(true);
@@ -141,8 +136,8 @@ public class UI extends JFrame implements DropTargetListener {
 			}
 		});
 		//Action
-		mntmCompare.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
+		mnCompare.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent arg0) {
 				compare();
 			}
 		});
